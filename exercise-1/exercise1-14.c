@@ -13,7 +13,8 @@ int main()
 
     while ((c = getchar()) != EOF)
     {
-        hist[c-'0']++;
+        if (c >= '0' && c <= '9')
+            hist[c-'0']++;
     }
 
     for(int i=0;i<10;i++){
