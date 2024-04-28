@@ -4,10 +4,18 @@ void escape(char s[],char t[]);
 void unescape(char s[],char t[]);
 
 int main(){
-    char t[] = "\thello\t\t\nworld\n";
+    char t[] = "\t\nhello\t\nworld\n";
     char s[MAX_LENGTH];
     escape(s,t);
-    printf(s);
+    printf("Testing escape\n");
+    printf("%s\n",s);
+
+    char t1[MAX_LENGTH];
+    char s1[] = "hello\\tworld";
+
+    unescape(s1,t1);
+    printf("Testing unescape\n");
+    printf("%s\n",t1);
     return 0;
 }
 
@@ -18,7 +26,7 @@ void escape(char s[],char t[]){
     int i, j;
     char c;
     i = 0,j=0;
-    for(i=0;t[i]!='\0' && j<MAX_LENGTH;i++,j++){
+    for(;t[i]!='\0' && j<MAX_LENGTH;i++,j++){
         c = t[i];
         switch (c){
             case '\n':
@@ -37,5 +45,19 @@ void escape(char s[],char t[]){
     s[j] = '\0';
 }
 
+
+// s -> escaped string, t -> original string
 void unescape(char s[],char t[]){
+    int i,j;
+    i = 0,j = 0;
+    for(;s[i]!='\0';i++,j++){
+        if(s[i]=='\\' & s[i+1]=='n'){
+            t[i++] = '\n';
+        }else if (s[i]=='\\' & s[i+1]=='t'){
+            t[i++] = '\t';
+        }else{
+            t[j] = s[i];
+        }
+    }
+    t[j] = '\0';
 }
