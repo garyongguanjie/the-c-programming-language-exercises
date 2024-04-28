@@ -19,16 +19,21 @@ int main(){
 // Explain why not. Modify it to print that value correctly, regardless of the machine on which it runs.
 void itoa(int n, char s[])
 {
-    int i, sign;
+    int i;
+
     unsigned un;
-    if ((sign = n) < 0) /* record sign */
-        un = -n;         /* make n positive */
+
+    if (n < 0) /* record sign */
+        un = -n; /* make n positive */
+    else
+        un = n;
+
     i = 0;
     do
     {                          /* generate digits in reverse order */
         s[i++] = un % 10 + '0'; /* get next digit */
     } while ((un /= 10) > 0);   /* delete it */
-    if (sign < 0)
+    if (n < 0)
         s[i++] = '-';
     s[i] = '\0';
     strrev(s);
