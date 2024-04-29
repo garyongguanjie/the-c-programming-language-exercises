@@ -1,4 +1,4 @@
-// Exercise 4-3. Given the basic framework, it's straightforward to extend the calculator. Add the modulus (%) operator and provisions for negative numbers.
+// Exercise 4-4. Add the commands to print the top elements of the stack without popping, to duplicate it, and to swap the top two elements. Add a command to clear the stack.
 #include <stdio.h>
 #include <stdlib.h> /* for atof() */
 #include <math.h>
@@ -7,6 +7,10 @@
 int getop(char[]);
 void push(double);
 double pop(void);
+void print_stack_top();
+void duplicate_top();
+void swap_two();
+
 /* reverse Polish calculator */
 int main()
 {
@@ -48,6 +52,15 @@ int main()
         case '\n':
             printf("\t%.8g\n", pop());
             break;
+        case 'a':
+            print_stack_top();
+            break;
+        case 'b':
+            duplicate_top();
+            break;
+        case 'c':
+            swap_two();
+            break;
         default:
             printf("error: unknown command %s\n", s);
             break;
@@ -78,6 +91,36 @@ double pop(void)
         return 0.0;
     }
 }
+
+void print_stack_top(){
+    if(sp>=1){
+        printf("stack top:%d",val[sp-1]);
+    }else{
+        printf("stack is empty cannot print top");
+    }
+}
+
+void duplicate_top(){
+    if(sp>=1){
+        val[sp] = val[sp-1];
+        sp++;
+    }else{
+        printf("stack is empty cannot duplicate top");
+    }
+}
+
+void swap_two(){
+    int temp;
+    if(sp>=2){
+        printf("swapping...\n");
+        temp = val[sp-2];
+        val[sp-2] = val[sp-1];
+        val[sp-1] = temp;
+    }else{
+        printf("stack has less then 2 values cannot swap");
+    }
+}
+
 
 #include <ctype.h>
 int getch(void);
