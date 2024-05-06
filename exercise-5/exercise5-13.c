@@ -1,12 +1,14 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 
-#define BUFFERSIZE 100000
+#define BUFFERSIZE 10
 #define MAXLINES 1000
 #define MAXLENGTH 1000
 
 char buffer[BUFFERSIZE];
 char *nlineb[MAXLINES];
+int getline(char s[], int lim);
 
 int main(int argc, char *argv[])
 {
@@ -23,7 +25,7 @@ int main(int argc, char *argv[])
             return 1;
         }
     }
-
+    printf("n is : %d\n",n);
     char linebuffer[MAXLENGTH];
 
     char *b0 = buffer; //buffer 0 pointer
@@ -38,8 +40,12 @@ int main(int argc, char *argv[])
     while (getline(linebuffer, MAXLENGTH))
     {
         // free pointers if we are at nlines;
+        // hard logic to write here
         if (nlines>=n){
-            brp = nlineb[(ls+1)%n];
+            ls++;
+            ls%=n;
+            printf("updating brp\n");
+            brp = nlineb[ls];
             nlines--;
         }
         len = strlen(linebuffer)+1; // include '\0' character
@@ -48,20 +54,21 @@ int main(int argc, char *argv[])
             nlineb[ls] = bwp;
             bwp = bwp+len;
         }else if(len<=brp-b0){
-            str(b0,linebuffer);
+            printf("change bwp to b0");
+            strcpy(b0,linebuffer);
             nlineb[ls] = b0;
             bwp = b0 + len;
         }else{
             printf("No space...\n");
         }
-        ls++;
-        ls%=n;
         nlines++;
     }
 
     // print the remaining lines;
-    for (;ls%n!=0;ls++){
-        printf(nlineb[ls]);
+    printf("tailing %d lines\n",nlines);
+    int i = 0;
+    while(nlines--){
+        printf(nlineb[i++]);
     }
 }
 
