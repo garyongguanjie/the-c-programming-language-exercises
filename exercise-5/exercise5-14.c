@@ -8,6 +8,7 @@ void writelines(char *lineptr[], int nlines);
 void myqsort(void *lineptr[], int left, int right,
            int (*comp)(void *, void *));
 int numcmp(char *, char *);
+int strcmp_f(char *s1,char *s2);
 char *alloc(int n);
 int getline(char s[], int lim);
 
@@ -21,6 +22,7 @@ int main(int argc, char *argv[])
     int nlines;      /* number of input lines read */
     int numeric = 0; /* 1 if numeric sort */
     int reverse = 1;
+    int fold = 0;
     int index = 1;
     // if (argc > 1 && strcmp(argv[1], "-n") == 0)
     //     numeric = 1;
@@ -32,13 +34,19 @@ int main(int argc, char *argv[])
             reverse = 1;
             printf("Reverse is on\n");
         }
+        if (strcmp(argv[index],"-f")){
+            fold = 1;
+        }
         index++;
         argc--;
     }
 
     basecompare = numeric ? ((int (*)(void *, void *))numcmp) :
 				((int (*)(void *, void *))strcmp);
+    basecompare = fold ? ((int (*)(void *, void *))numcmp) :
+				((int (*)(void *, void *))strcmp_f);
 	compare = reverse ? descending : basecompare;
+
 
     if ((nlines = readlines(lineptr, MAXLINES)) >= 0)
     {
@@ -84,6 +92,13 @@ int numcmp(char *s1, char *s2)
         return 1;
     else
         return 0;
+}
+
+int strcmp_f(char *s1,char *s2){
+    while (toupper(*s1) == toupper(*s2++))
+		if (*s1++ == '\0')
+			return (0);
+	return (toupper(*(const unsigned char *)s1) - toupper(*(const unsigned char *)(s2 - 1)));
 }
 
 void swap(void *v[], int i, int j)
